@@ -2,6 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const pool = require('../db');
 
 async function getAllTasks(req, res, next) {
   res.send('Got all tasks.');

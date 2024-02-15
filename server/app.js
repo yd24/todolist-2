@@ -7,16 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//initialize pool of connections to PostgreSQL DB
-const Pool = require('pg').Pool;
-const pool = new Pool({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DB,
-  password: process.env.PW,
-  port: process.env.DB_PORT,
-});
-
 //Methods for Task//
 const taskMethods = require('./modules/task');
 app.get('/task', taskMethods.getAllTasks);
@@ -25,7 +15,7 @@ app.post('/task', taskMethods.createTask);
 app.put('/task/:id', taskMethods.updateTask);
 app.delete('/task/:id', taskMethods.deleteTask);
 
-//Test server
+//Test server response
 app.get('*', (req, res, next) => {
   res.send('Test completed.');
 });
