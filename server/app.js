@@ -17,13 +17,17 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-//testing server response
-app.get('/todo', (req, res) => {
-  res.send('You got the todo!');
-});
+//Methods for Task//
+const taskMethods = require('./modules/task');
+app.get('/task', taskMethods.getAllTasks);
+app.get('/task/:id', taskMethods.getSingleTask);
+app.post('/task', taskMethods.createTask);
+app.put('/task/:id', taskMethods.updateTask);
+app.delete('/task/:id', taskMethods.deleteTask);
 
-app.get('*', (req, res) => {
-  res.send('No resource here.');
+//Test server
+app.get('*', (req, res, next) => {
+  res.send('Test completed.');
 });
 
 module.exports = {
