@@ -13,7 +13,6 @@ body {
 
 #sidebar {
   background-color: red;
-  width: 20rem;
   display: flex;
   flex-direction: column;
 }
