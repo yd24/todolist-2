@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS task (
   content VARCHAR(255) NOT NULL,
   is_complete BOOL DEFAULT FALSE,
   point_value INT,
-  created_at TIMESTAMP WITH TIME ZONE
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
 );
