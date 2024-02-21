@@ -66,8 +66,6 @@ async function updateTask(req, res, next) {
   }
 };
 
-//add function that completes task and adds points to rewards.
-
 async function deleteTask(req, res, next) {
   try {
     const query = {
