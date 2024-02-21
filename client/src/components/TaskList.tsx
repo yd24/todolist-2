@@ -1,16 +1,16 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
 
-export function TaskList() {
-  interface Task {
-    taskID: number,
-    title: string,
-    content: string,
-    is_completed: boolean,
-    point_value: number,
-    created_at: string,
-  }
+interface Task {
+  taskID: number;
+  title: string;
+  content: string;
+  is_completed: boolean;
+  point_value: number;
+  created_at: string;
+}
 
+export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskError, setTaskError] = useState<string | null>(null);
 
