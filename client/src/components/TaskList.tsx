@@ -12,6 +12,7 @@ export function TaskList() {
   }
 
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskError, setTaskError] = useState<string | null>(null);
 
   const getTasks = async() => {
     try {
@@ -24,6 +25,7 @@ export function TaskList() {
       setTasks(results.data);
     } catch (e) {
       console.error(e);
+      setTaskError('Unable to retrieve tasks.');
     }
   };
 
@@ -34,6 +36,9 @@ export function TaskList() {
   return (
     <div id="tasklist">
       <ul>
+        {taskError &&
+          <li><p>{taskError}</p></li>
+        }
         {
           tasks.map((task: Task, idx) => {
             return (

@@ -11,6 +11,13 @@ body {
   min-height: 100vh;
 }
 
+#taskModal {
+  background-color: white;
+  width: 15rem;
+  height: 15rem;
+  position: absolute;
+}
+
 #sidebar {
   background-color: red;
   display: flex;
