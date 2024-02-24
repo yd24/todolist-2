@@ -45,7 +45,7 @@ function App() {
         data: input,
       };
       const result = await axios<Task>(config);
-      setTasks([...taskList, result.data]);
+      setTasks([result.data, ...taskList]);
     } catch (err) {
       console.error(err);
     }

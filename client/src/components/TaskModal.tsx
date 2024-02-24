@@ -1,5 +1,5 @@
 import type { TaskInput } from '../common/TaskInput';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface TaskModalProps {
   closeTaskModal: () => void;
@@ -10,7 +10,7 @@ interface TaskModalProps {
 export function TaskModal(props: TaskModalProps) {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDetails, setTaskDetails] = useState('');
-  const [taskPoints, setTaskPoints] = useState<number | null>(null);
+  const [taskPoints, setTaskPoints] = useState<number>(0);
 
   function addTaskHandler() {
     const newTask: TaskInput = {
@@ -20,6 +20,10 @@ export function TaskModal(props: TaskModalProps) {
     }
 
     props.addTask(newTask);
+    setTaskTitle('');
+    setTaskDetails('');
+    setTaskPoints(0);
+    props.closeTaskModal();
   }
   
   return (
@@ -32,15 +36,15 @@ export function TaskModal(props: TaskModalProps) {
           <div id="task-modal-input">
             <label>
               <p>Task:</p> 
-              <input name="task-title" type="text" maxLength={255} size={25} onChange={(e) => {setTaskTitle(e.target.value)}} />
+              <input name="task-title" type="text" maxLength={255} size={25} onChange={(e) => {setTaskTitle(e.target.value)}} value={taskTitle}/>
             </label>
             <label>
               <p>Details:</p>
-              <textarea rows={10} cols={50} name="task-details" placeholder="Enter details of the task here" onChange={(e) => {setTaskDetails(e.target.value)}}/>
+              <textarea rows={10} cols={50} name="task-details" placeholder="Enter details of the task here" onChange={(e) => {setTaskDetails(e.target.value)}} value={taskDetails}/>
             </label>
             <label>
               <p>Point Value:</p>
-              <input name="points" type="number" min="0" max="9999" onChange={(e) => {setTaskPoints(e.target.valueAsNumber)}}/>
+              <input name="points" type="number" min="0" max="9999" onChange={(e) => {setTaskPoints(e.target.valueAsNumber)}} value={taskPoints}/>
             </label>
             <div id="task-modal-btns">
               <button onClick={addTaskHandler}>Add New Task</button>
