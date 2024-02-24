@@ -22,6 +22,13 @@ body {
 
 #task-modal-input {
   padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#task-modal-input textarea {
+  height: auto;
 }
 
 #task-modal-close {
@@ -30,7 +37,8 @@ body {
 }
 
 #task-modal-btns {
-  padding: 2rem 0 3rem 0;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 #sidebar {

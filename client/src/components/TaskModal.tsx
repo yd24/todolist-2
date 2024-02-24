@@ -1,11 +1,27 @@
+import type { TaskInput } from '../common/TaskInput';
 import { useState } from 'react';
 
 interface TaskModalProps {
   closeTaskModal: () => void;
   isShowingTaskModal: boolean;
+  addTask: (input: TaskInput) => void;
 }
 
 export function TaskModal(props: TaskModalProps) {
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDetails, setTaskDetails] = useState('');
+  const [taskPoints, setTaskPoints] = useState<number | null>(null);
+
+  function addTaskHandler() {
+    const newTask: TaskInput = {
+      title: taskTitle,
+      content: taskDetails,
+      point_value: taskPoints,
+    }
+
+    props.addTask(newTask);
+  }
+  
   return (
     <>
       {props.isShowingTaskModal &&
@@ -14,15 +30,20 @@ export function TaskModal(props: TaskModalProps) {
             <button onClick={props.closeTaskModal}>X</button>
           </p>
           <div id="task-modal-input">
-            <p>Task</p>
-            <input type="text" />
-            <p>Details</p>
-            <textarea />
-            <p>Point Value</p>
-            <input type="text" />
-
+            <label>
+              <p>Task:</p> 
+              <input name="task-title" type="text" maxLength={255} size={25} onChange={(e) => {setTaskTitle(e.target.value)}} />
+            </label>
+            <label>
+              <p>Details:</p>
+              <textarea rows={10} cols={50} name="task-details" placeholder="Enter details of the task here" onChange={(e) => {setTaskDetails(e.target.value)}}/>
+            </label>
+            <label>
+              <p>Point Value:</p>
+              <input name="points" type="number" min="0" max="9999" onChange={(e) => {setTaskPoints(e.target.valueAsNumber)}}/>
+            </label>
             <div id="task-modal-btns">
-              <button>Add New Task</button>
+              <button onClick={addTaskHandler}>Add New Task</button>
             </div>
           </div>
         </div>
