@@ -1,5 +1,5 @@
 import type { TaskInput } from '../common/TaskInput';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface TaskModalProps {
   closeTaskModal: () => void;
