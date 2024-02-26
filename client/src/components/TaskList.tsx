@@ -1,19 +1,40 @@
 import type { Task } from '../common/Task';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
-interface TaskListProps {
-  taskList: Task[];
-  taskError: string | null;
-}
+export function TaskList() {
+  const getTasks = async() => {
+    try {
+      const config = {
+        method: 'get',
+        baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+        url: '/task',
+      };
+      const results = await axios<Task[]>(config);
+      return results.data;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-export function TaskList(props: TaskListProps) {
+  const {data: taskList, isLoading, isError, error } = useQuery({
+    queryKey: ['get-todo'],
+    queryFn: getTasks,
+  });
+
   return (
     <div id="tasklist">
       <ul>
-        {props.taskError &&
-          <li><p>{props.taskError}</p></li>
+        {isLoading &&
+          <li><p>Loading data...</p></li>
         }
+
+        {isError &&
+          <li><p>{error?.message}</p></li>
+        }
+
         {
-          props.taskList.map((task: Task, idx) => {
+          taskList?.map((task: Task, idx) => {
             return (
               <li key={idx}>
                 <h3>{task.title}</h3>

@@ -1,10 +1,13 @@
+import type { Task } from '../common/Task';
 import type { TaskInput } from '../common/TaskInput';
+
 import { useState } from 'react';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 
 interface TaskModalProps {
   closeTaskModal: () => void;
   isShowingTaskModal: boolean;
-  addTask: (input: TaskInput) => void;
 }
 
 export function TaskModal(props: TaskModalProps) {
@@ -12,14 +15,27 @@ export function TaskModal(props: TaskModalProps) {
   const [taskDetails, setTaskDetails] = useState('');
   const [taskPoints, setTaskPoints] = useState<number>(0);
 
+  const addTask = async(input: TaskInput) => {
+    try {
+      const config = {
+        method: 'post',
+        baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+        url: '/task',
+        data: input,
+      };
+      const result = await axios<Task>(config);
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   function addTaskHandler() {
     const newTask: TaskInput = {
       title: taskTitle,
       content: taskDetails,
       point_value: taskPoints,
-    }
-
-    props.addTask(newTask);
+    };
     setTaskTitle('');
     setTaskDetails('');
     setTaskPoints(0);
