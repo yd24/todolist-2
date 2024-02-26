@@ -1,41 +1,19 @@
-import axios from 'axios';
-import {useState, useEffect} from 'react';
+import type { Task } from '../common/Task';
 
-export function TaskList() {
-  interface Task {
-    taskID: number,
-    title: string,
-    content: string,
-    is_completed: boolean,
-    point_value: number,
-    created_at: string,
-  }
+interface TaskListProps {
+  taskList: Task[];
+  taskError: string | null;
+}
 
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const getTasks = async() => {
-    try {
-      const config = {
-        method: 'get',
-        baseURL: import.meta.env.VITE_REACT_APP_SERVER,
-        url: '/task',
-      };
-      const results = await axios<Task[]>(config);
-      setTasks(results.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    getTasks();
-  }, []);
-
+export function TaskList(props: TaskListProps) {
   return (
     <div id="tasklist">
       <ul>
+        {props.taskError &&
+          <li><p>{props.taskError}</p></li>
+        }
         {
-          tasks.map((task: Task, idx) => {
+          props.taskList.map((task: Task, idx) => {
             return (
               <li key={idx}>
                 <h3>{task.title}</h3>

@@ -1,8 +1,12 @@
-export function SideOptions() {
+interface SideOptionsProps {
+  showTaskModal: () => void;
+}
+
+export function SideOptions(props: SideOptionsProps) {
   return (
     <ul id="side-options">
       <li>
-        List 1
+        <button onClick={props.showTaskModal}>Add Task</button>
       </li>
       <li>
         List 2
