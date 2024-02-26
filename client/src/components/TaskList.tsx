@@ -1,24 +1,11 @@
 import type { Task } from '../common/Task';
-import axios from 'axios';
+
 import { useQuery } from '@tanstack/react-query';
+import { getTasks } from '../api/taskapi';
 
 export function TaskList() {
-  const getTasks = async() => {
-    try {
-      const config = {
-        method: 'get',
-        baseURL: import.meta.env.VITE_REACT_APP_SERVER,
-        url: '/task',
-      };
-      const results = await axios<Task[]>(config);
-      return results.data;
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const {data: taskList, isLoading, isError, error } = useQuery({
-    queryKey: ['get-todo'],
+    queryKey: ['get-tasks'],
     queryFn: getTasks,
   });
 
