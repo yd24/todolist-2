@@ -1,13 +1,17 @@
 import type { TaskInput } from '../common/TaskInput';
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addTask } from '../api/taskapi';
 
 interface TaskModalProps {
   closeTaskModal: () => void;
   isShowingTaskModal: boolean;
-  addTask: (input: TaskInput) => void;
 }
 
 export function TaskModal(props: TaskModalProps) {
+  const queryClient = useQueryClient();
+
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDetails, setTaskDetails] = useState('');
   const [taskPoints, setTaskPoints] = useState<number>(0);
@@ -17,14 +21,20 @@ export function TaskModal(props: TaskModalProps) {
       title: taskTitle,
       content: taskDetails,
       point_value: taskPoints,
-    }
-
-    props.addTask(newTask);
+    };
+    addTaskMutate(newTask);
     setTaskTitle('');
     setTaskDetails('');
     setTaskPoints(0);
     props.closeTaskModal();
   }
+
+  const {isError, error, mutate: addTaskMutate} = useMutation({
+    mutationFn: addTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['get-tasks']});
+    },
+  });
   
   return (
     <>
@@ -48,6 +58,10 @@ export function TaskModal(props: TaskModalProps) {
             </label>
             <div id="task-modal-btns">
               <button onClick={addTaskHandler}>Add New Task</button>
+
+              {isError &&
+                <p>{error?.message}</p>
+              }
             </div>
           </div>
         </div>

@@ -1,19 +1,27 @@
 import type { Task } from '../common/Task';
 
-interface TaskListProps {
-  taskList: Task[];
-  taskError: string | null;
-}
+import { useQuery } from '@tanstack/react-query';
+import { getTasks } from '../api/taskapi';
 
-export function TaskList(props: TaskListProps) {
+export function TaskList() {
+  const {data: taskList, isLoading, isError, error } = useQuery({
+    queryKey: ['get-tasks'],
+    queryFn: getTasks,
+  });
+
   return (
     <div id="tasklist">
       <ul>
-        {props.taskError &&
-          <li><p>{props.taskError}</p></li>
+        {isLoading &&
+          <li><p>Loading data...</p></li>
         }
+
+        {isError &&
+          <li><p>{error?.message}</p></li>
+        }
+
         {
-          props.taskList.map((task: Task, idx) => {
+          taskList?.map((task: Task, idx) => {
             return (
               <li key={idx}>
                 <h3>{task.title}</h3>
