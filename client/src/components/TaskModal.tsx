@@ -62,7 +62,10 @@ export function TaskModal(props: TaskModalProps) {
     onSuccess: (data: Task | undefined) => {
       //need to fix this, does not actually update the cache because
       //this doesn't locate the updated item.
-      queryClient.setQueryData(['get-tasks', data?.taskid], data);
+      //queryClient.setQueryData(['get-tasks'], data);
+      
+      //for now, we'll just refetch.
+      queryClient.invalidateQueries({ queryKey: ['get-tasks'] });
     },
   });
 
