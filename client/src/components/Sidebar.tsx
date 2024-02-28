@@ -9,7 +9,7 @@ export function Sidebar(props: SidebarProps) {
   return (
     <div id="sidebar">
       <ProgressBar />
-      <SideOptions showTaskModal={props.showTaskModal}/>
+      <SideOptions showTaskModal={props.showTaskModal} />
     </div>
   );
 }

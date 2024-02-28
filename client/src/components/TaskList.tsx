@@ -3,7 +3,11 @@ import type { Task } from '../common/Task';
 import { useQuery } from '@tanstack/react-query';
 import { getTasks } from '../api/taskapi';
 
-export function TaskList() {
+interface TaskListProps {
+  setEditingHandler: (task: Task) => void;
+}
+
+export function TaskList(props: TaskListProps) {
   const {data: taskList, isLoading, isError, error } = useQuery({
     queryKey: ['get-tasks'],
     queryFn: getTasks,
@@ -28,6 +32,7 @@ export function TaskList() {
                 <p>{task.content}</p>
                 <p>Points: {task.point_value}</p>
                 <p>Created on: {new Date(task.created_at).toDateString()}</p>
+                <button onClick={() => props.setEditingHandler(task)}>Edit Task</button>
               </li>
             );
           })
