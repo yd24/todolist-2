@@ -40,7 +40,7 @@ export function TaskModal(props: TaskModalProps) {
     };
     const taskVariables = {
       input: updatedTask,
-      editTask: props.isEditingTask,
+      taskID: props.isEditingTask ? props.isEditingTask.taskid : null,
     };
     updateTaskMutate.mutate(taskVariables);
     cleanupTaskModal();
@@ -62,7 +62,7 @@ export function TaskModal(props: TaskModalProps) {
     onSuccess: (data: Task | undefined) => {
       //need to fix this, does not actually update the cache because
       //this doesn't locate the updated item.
-      queryClient.setQueryData(['get-tasks', data?.taskID], data);
+      queryClient.setQueryData(['get-tasks', data?.taskid], data);
     },
   });
 

@@ -4,7 +4,7 @@ import type { TaskInput } from "../common/TaskInput";
 
 interface TaskVariables {
   input: TaskInput;
-  editTask: Task | null;
+  taskID: number | null;
 }
 
 export const getTasks = async () => {
@@ -36,16 +36,12 @@ export const addTask = async (input: TaskInput) => {
   }
 };
 
-export const editTask = async ({input, editTask}: TaskVariables) => {
+export const editTask = async ({input, taskID}: TaskVariables) => {
   try {
     const config = {
       method: "put",
       baseURL: import.meta.env.VITE_REACT_APP_SERVER,
-      //not sure why, but when accessing the property,
-      //it can only be accessed with the wrong case
-      //from what's defined in the type.
-      //aka taskid instead of taskID.
-      url: `/task/${editTask.taskid}`,
+      url: `/task/${taskID}`,
       data: input,
     };
     const result = await axios<Task>(config);
