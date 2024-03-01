@@ -50,3 +50,17 @@ export const editTask = async ({input, taskID}: TaskVariables) => {
     console.error(err);
   }
 };
+
+export const deleteTask = async (taskID: number | null) => {
+    try {
+    const config = {
+      method: "delete",
+      baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+      url: `/task/${taskID}`,
+    };
+    const result = await axios<Task>(config);
+    return result.data;
+  } catch (err) {
+    console.error(err);
+  }
+}

@@ -29,7 +29,7 @@ export function TaskModal(props: TaskModalProps) {
       point_value: Number(taskPointsRef.current!.value),
     };
     addTaskMutate.mutate(newTask);
-    cleanupTaskModal();
+    props.closeTaskModal();
   }
 
   function updateTaskHandler() {
@@ -43,17 +43,13 @@ export function TaskModal(props: TaskModalProps) {
       taskID: props.isEditingTask ? props.isEditingTask.taskid : null,
     };
     updateTaskMutate.mutate(taskVariables);
-    cleanupTaskModal();
-  }
-
-  function cleanupTaskModal() {
     props.closeTaskModal();
   }
 
   const addTaskMutate = useMutation({
     mutationFn: addTask,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['get-tasks'] });
+      queryClient.invalidateQueries({ queryKey: ["get-tasks"] });
     },
   });
 
@@ -63,9 +59,9 @@ export function TaskModal(props: TaskModalProps) {
       //need to fix this, does not actually update the cache because
       //this doesn't locate the updated item.
       //queryClient.setQueryData(['get-tasks'], data);
-      
+
       //for now, we'll just refetch.
-      queryClient.invalidateQueries({ queryKey: ['get-tasks'] });
+      queryClient.invalidateQueries({ queryKey: ["get-tasks"] });
     },
   });
 
