@@ -30,7 +30,7 @@ function App() {
       <div id="task-wrapper">
         <Sidebar showTaskModal={showTaskModal} />
         <TaskModal isShowingTaskModal={isShowingTaskModal} isEditingTask={isEditingTask} closeTaskModal={closeTaskModal} />
-        <TaskList setEditingHandler={setEditingHandler} />
+        <TaskList closeTaskModal={closeTaskModal} setEditingHandler={setEditingHandler} />
       </div>
     </>
   )
