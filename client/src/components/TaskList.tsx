@@ -1,7 +1,7 @@
 import type { Task } from "../common/Task";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getTasks, deleteTask } from "../api/taskapi";
+import { getUncompletedTasks, deleteTask, completeTask } from "../api/taskapi";
 
 interface TaskListProps {
   setEditingHandler: (task: Task) => void;
@@ -18,13 +18,24 @@ export function TaskList(props: TaskListProps) {
     error,
   } = useQuery({
     queryKey: ["get-tasks"],
-    queryFn: getTasks,
+    queryFn: getUncompletedTasks,
   });
+
+  function completeTaskHandler(task: Task) {
+    completeTaskMutate.mutate(task.taskid);
+  }
 
   function deleteTaskHandler(taskID: number) {
     deleteTaskMutate.mutate(taskID);
     props.closeTaskModal();
   }
+
+  const completeTaskMutate = useMutation({
+    mutationFn: completeTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get-tasks"]});
+    },
+  });
 
   const deleteTaskMutate = useMutation({
     mutationFn: deleteTask,
@@ -61,6 +72,9 @@ export function TaskList(props: TaskListProps) {
               </button>
               <button onClick={() => deleteTaskHandler(task.taskid)}>
                 Delete Task
+              </button>
+              <button onClick={()=> completeTaskHandler(task)}>
+                Complete Task
               </button>
             </li>
           );

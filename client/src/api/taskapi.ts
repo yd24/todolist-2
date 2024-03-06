@@ -21,6 +21,20 @@ export const getTasks = async () => {
   }
 };
 
+export const getUncompletedTasks = async () => {
+  try {
+    const config = {
+      method: "get",
+      baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+      url: "/uncompleted",
+    };
+    const results = await axios<Task[]>(config);
+    return results.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const addTask = async (input: TaskInput) => {
   try {
     const config = {
@@ -63,4 +77,18 @@ export const deleteTask = async (taskID: number | null) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
+
+export const completeTask = async (taskID: number | null) => {
+  try {
+    const config = {
+      method: "put",
+      baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+      url: `/complete/${taskID}`,
+    };
+    const result = await axios<Task>(config);
+    return result.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
