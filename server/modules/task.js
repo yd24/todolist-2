@@ -16,6 +16,30 @@ async function getAllTasks(req, res, next) {
   }
 };
 
+async function getAllCompletedTasks(req, res, next) {
+  try {
+    const query = {
+      text: 'SELECT * FROM task WHERE is_complete = true ORDER BY created_at DESC',
+    };
+    const allTasks = await pool.query(query);
+    res.json(allTasks.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+async function getAllUncompletedTasks(req, res, next) {
+  try {
+    const query = {
+      text: 'SELECT * FROM task WHERE is_complete = false ORDER BY created_at DESC',
+    };
+    const allTasks = await pool.query(query);
+    res.json(allTasks.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
 async function getSingleTask(req, res, next) {
   try {
     const query = {
@@ -66,6 +90,22 @@ async function updateTask(req, res, next) {
   }
 };
 
+async function completeTask(req, res, next) {
+  try {
+    const query = {
+      text: 'UPDATE task SET is_complete = $1 WHERE taskID = $2 RETURNING *',
+      values: [
+        true,
+        req.params.id,
+      ],
+    };
+    const updatedTask = await pool.query(query);
+    res.json(updatedTask.rows[0]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function deleteTask(req, res, next) {
   try {
     const query = {
@@ -85,4 +125,7 @@ module.exports = {
   createTask: createTask,
   updateTask: updateTask,
   deleteTask: deleteTask,
+  getAllCompletedTasks: getAllCompletedTasks,
+  getAllUncompletedTasks: getAllUncompletedTasks,
+  completeTask: completeTask,
 }

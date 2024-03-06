@@ -14,8 +14,11 @@ const pointMethods = require('./modules/points');
 //Task Routes//
 app.get('/task', taskMethods.getAllTasks);
 app.get('/task/:id', taskMethods.getSingleTask);
+app.get('/completed', taskMethods.getAllCompletedTasks);
+app.get('/uncompleted', taskMethods.getAllUncompletedTasks);
 app.post('/task', taskMethods.createTask);
 app.put('/task/:id', taskMethods.updateTask);
+app.put('/complete/:id', taskMethods.completeTask);
 app.delete('/task/:id', taskMethods.deleteTask);
 
 //Reward Routes//
