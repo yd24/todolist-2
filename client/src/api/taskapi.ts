@@ -92,3 +92,17 @@ export const completeTask = async (taskID: number | null) => {
     console.error(err);
   }
 };
+
+export const getRewards = async () => {
+  try {
+    const config = {
+      method: "get",
+      baseURL: import.meta.env.VITE_REACT_APP_SERVER,
+      url: `/reward`,
+    };
+    const result = await axios<Task>(config);
+    return result.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
